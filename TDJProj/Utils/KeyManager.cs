@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace TDJProj.Utils
 {
+    // Classe feita pelo professor Paulo Macedo
     public class KeyManager
     {
         private static KeyManager instance = null; // Singleton instance

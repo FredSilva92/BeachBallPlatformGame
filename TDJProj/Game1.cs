@@ -11,22 +11,24 @@ namespace TDJProj
         private SpriteBatch _spriteBatch;
         private BeachBall beachBall;
         private Texture2D background;
-        private Map map;
-        private bool hasDied;
+        private LevelMap map;
+        private ScreenMessage screenMessage;
+        private int viewportWidth;
+        private int viewportHeight;
 
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
-            beachBall = new BeachBall(this);
+            beachBall = new BeachBall();
+            screenMessage = new ScreenMessage();
         }
 
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
             new KeyManager();
-            map = new Map();
+            map = new LevelMap();
             base.Initialize();
             
         }
@@ -34,38 +36,32 @@ namespace TDJProj
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-            //_currentState = new MainMenu(this, null);
-            //_currentState.LoadContent(Content);
             background = Content.Load<Texture2D>("Background");
-            Tiles.Content = Content;
+            viewportWidth = this.Window.ClientBounds.Width;
+            viewportHeight = this.Window.ClientBounds.Height;
+            Tile.Content = Content;
             beachBall.LoadContent(Content);
-
-            int width = this.Window.ClientBounds.Width / 10;
-            int height = this.Window.ClientBounds.Height / 10;
+            screenMessage.LoadContent(Content, viewportWidth/2, viewportHeight/2);
 
             map.Generate(new int[,] {
                 {1, 1, 1, 1, 1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,},
                 {1, 0, 0, 0, 0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,},
                 {1, 0, 0, 0, 0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,},
-                {1, 1, 1, 1, 1, 1, 1, 1,1,1,1,1,1,3,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,},
-                {1, 0, 0, 0, 0, 0, 0, 0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,},
-                {1, 0, 0, 0, 0, 0, 0, 0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,},
-                {1, 0, 0, 0, 0, 0, 0, 0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,},
-                {1, 0, 0, 2, 1, 1, 1, 1,4,4,1,1,1,1,1,1,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,},
-                {1, 0, 0, 0, 0, 0, 0, 1,1,1,1,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,},
-                {1, 0, 0, 0, 0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,},
-                {1, 0, 0, 0, 0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,},
-                {1, 0, 0, 0, 0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,},
-                {1, 0, 0, 0, 0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,},
-                {1, 0, 0, 0, 0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,},
+                {1, 1, 1, 1, 1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,1,3,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,1,},
+                {1, 0, 0, 0, 0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,4,4,1,1,1,1,1,0,0,0,1,0,0,0,0,0,0,0,0,1,},
+                {1, 0, 0, 0, 0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,},
+                {1, 0, 0, 0, 0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,},
+                {1, 0, 0, 2, 1, 1, 1, 1,4,4,1,1,1,1,1,4,4,1,1,1,1,1,1,1,1,0,0,4,4,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,},
+                {1, 0, 0, 0, 0, 0, 0, 1,1,1,1,0,0,0,1,1,1,1,0,0,0,0,0,0,1,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,},
+                {1, 0, 0, 0, 0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,},
+                {1, 0, 0, 0, 0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,5,1,0,0,0,0,0,0,0,0,0,4,4,0,0,0,0,0,0,0,0,1,},
+                {1, 0, 0, 0, 0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,1,},
+                {1, 0, 0, 0, 0, 0, 1, 1,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,},
+                {1, 0, 0, 0, 0, 1, 1, 1,4,4,1,1,4,4,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,4,4,4,4,4,4,1,},
                 {1, 1, 1, 1, 1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,},
-
-
             }, 32, 32);
 
-            GraphicsDevice.Viewport = new Viewport(0, 0, this.Window.ClientBounds.Width * 2, this.Window.ClientBounds.Height);
-
-            // TODO: use this.Content to load your game content here
+            GraphicsDevice.Viewport = new Viewport(0, 0, viewportWidth * 2, viewportHeight);
         }
 
         protected override void Update(GameTime gameTime)
@@ -73,30 +69,26 @@ namespace TDJProj
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            if (hasDied) {
+            if (beachBall.IsDeath || beachBall.HasFinished)
+            {
                 return;
             }
 
-            // TODO: Add your update logic here
 
-            if (beachBall.OnFirstSection(this.Window.ClientBounds.Width)) {
-                GraphicsDevice.Viewport = new Viewport(0, 0, this.Window.ClientBounds.Width * 2, this.Window.ClientBounds.Height);
-            } else if (beachBall.OnSecondSection(this.Window.ClientBounds.Width)) {
-                GraphicsDevice.Viewport = new Viewport(-this.Window.ClientBounds.Width, 0, this.Window.ClientBounds.Width * 2, this.Window.ClientBounds.Height);
+            if (beachBall.OnFirstSection(viewportWidth)) {
+                GraphicsDevice.Viewport = new Viewport(0, 0, viewportWidth * 2, viewportHeight);
+            } else if (beachBall.OnSecondSection(viewportWidth)) {
+                GraphicsDevice.Viewport = new Viewport(-viewportWidth, 0, viewportWidth * 2, viewportHeight);
             }
 
             KeyManager.Update();
-            foreach (CollisionTiles tile in map.CollisionTiles)
+            foreach (Tile tile in map.CollisionTiles)
             {
                 beachBall.HasCollision(gameTime, tile, map.Width, map.Height);
 
-                if (beachBall.IsDeath) {
+                if (beachBall.IsDeath || beachBall.HasFinished) {
                     return;
                 }
-                /*if (beachBall.HasCollision(gameTime, tile, map.Width, map.Height) == 'd')
-                {
-                    //hasDied = true;
-                };*/
             }
             beachBall.Update(gameTime);
 
@@ -106,18 +98,33 @@ namespace TDJProj
         protected override void Draw(GameTime gameTime)
         {
             _spriteBatch.Begin();
-            //_currentState.Draw(gameTime, _spriteBatch);
             _spriteBatch.Draw(background,
-                new Rectangle(0, 0, this.Window.ClientBounds.Width, this.Window.ClientBounds.Height),
+                new Rectangle(0, 0, viewportWidth, viewportHeight),
                 Color.White);
             _spriteBatch.Draw(background,
-                new Rectangle(this.Window.ClientBounds.Width, 0, this.Window.ClientBounds.Width, this.Window.ClientBounds.Height),
+                new Rectangle(viewportWidth, 0, viewportWidth, viewportHeight),
                 Color.White);
             map.Draw(_spriteBatch);
             beachBall.Draw(gameTime, _spriteBatch);
-            _spriteBatch.End();
 
-            // TODO: Add your drawing code here
+            if (beachBall.IsDeath) {
+
+                if (beachBall.Position.X <= viewportWidth)
+                {
+                    screenMessage.Draw(_spriteBatch, 0, viewportWidth / 2, viewportHeight / 3);
+                }
+                else {
+                    screenMessage.Draw(_spriteBatch, 0, viewportWidth + viewportWidth / 2, viewportHeight / 2);
+                }
+                
+            }
+
+            if (beachBall.HasFinished) {
+                int width = viewportWidth + viewportWidth/2;
+                screenMessage.Draw(_spriteBatch, 1, width, viewportHeight / 2);
+            }
+
+            _spriteBatch.End();
 
             base.Draw(gameTime);
         }

@@ -5,15 +5,15 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace TDJProj
 {
-    public class Map
+    public class LevelMap
     {
-        public Map()
+        public LevelMap()
         {
         }
 
-        private List<CollisionTiles> collisionTiles = new List<CollisionTiles>();
+        private List<Tile> collisionTiles = new List<Tile>();
 
-        public List<CollisionTiles> CollisionTiles {
+        public List<Tile> CollisionTiles {
             get { return collisionTiles; }
         }
 
@@ -33,18 +33,16 @@ namespace TDJProj
                     int number = map[y, x];
 
                     if (number > 0) {
-                        collisionTiles.Add(new CollisionTiles(number,
+                        collisionTiles.Add(new Tile(number,
                             new Rectangle(x * _width, y * _height, _width, _height)));
                     }
 
-                    //width = (x + 1) * _width;
-                    //height = (y + 1) * _height;
                 }
             }
         }
 
         public void Draw(SpriteBatch spriteBatch) {
-            foreach (CollisionTiles tile in collisionTiles)
+            foreach (Tile tile in collisionTiles)
                 tile.Draw(spriteBatch);
         }
     }
