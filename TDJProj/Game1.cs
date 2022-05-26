@@ -41,7 +41,7 @@ namespace TDJProj
             viewportHeight = this.Window.ClientBounds.Height;
             Tile.Content = Content;
             beachBall.LoadContent(Content);
-            screenMessage.LoadContent(Content, viewportWidth/2, viewportHeight/2);
+            screenMessage.LoadContent(Content);
 
             map.Generate(new int[,] {
                 {1, 1, 1, 1, 1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,},

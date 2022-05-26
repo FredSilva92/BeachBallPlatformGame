@@ -58,11 +58,6 @@ namespace TDJProj
             position = new Vector2(32,32);
         }
 
-        public void PostUpdate(GameTime gameTime)
-        {
-            throw new NotImplementedException();
-        }
-
         public void Update(GameTime gameTime)
         {
             bool hasCollision = hasCollisionLeft ||

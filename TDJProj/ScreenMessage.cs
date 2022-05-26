@@ -9,14 +9,12 @@ namespace TDJProj
     {
         private Texture2D congratulations;
         private Texture2D gameOver;
-        private Vector2 congratzPosition;
-        private Vector2 gameOverPosition;
 
         public ScreenMessage()
         {
         }
 
-        public void LoadContent(ContentManager content, int xCenter, int yCenter) {
+        public void LoadContent(ContentManager content) {
             congratulations = content.Load<Texture2D>("Congratulations");
             gameOver = content.Load<Texture2D>("GameOver");
         }
