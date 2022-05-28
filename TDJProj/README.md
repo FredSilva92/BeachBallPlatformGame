@@ -1,7 +1,7 @@
 ﻿Beach Ball platform
 
 Pedro Silva a20721
-José Lourenço
+José Lourenço a23496
 
 O jogo do nosso grupo foi inspirado em 2 jogos: Kula world e prince of persia 1.
 Kula world inspirou a personagem do jogo que é uma bola de praia, enquanto que o prince of persia 1
